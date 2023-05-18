@@ -329,7 +329,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3405138740682335156, guid: 51301304f95865c47a43c7c25880c04c, type: 3}
       propertyPath: m_Name
-      value: MainMenu
+      value: MainMenu Variant
       objectReference: {fileID: 0}
     - target: {fileID: 5451938903781687306, guid: 51301304f95865c47a43c7c25880c04c, type: 3}
       propertyPath: m_Pivot.x
@@ -434,14 +434,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 333a61e31fa2cb047b17185f7cd27f92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _OnHardLoadingToGameplayFSMName: ON_HARD_LOADING
+  _FSMVariable: SCENE_TO_LOAD
   _IdProvider: {fileID: 11400000, guid: 6ebc028295ad14d4a81aaf49cdf1bc91, type: 2}
   _OptionsViewPrefab: {fileID: 7423699908457368893, guid: eb9471f362b4dac439bc9fddd716e7bf, type: 3}
   MainButtons:
   - {fileID: 5890144452474774827}
   - {fileID: 3182087909150650633}
   - {fileID: 965880176787887000}
-  _NormalButtonColor: {r: 0.2392157, g: 0.9607844, b: 0, a: 0}
-  _SelectedButtonColor: {r: 1, g: 0, b: 0, a: 0}
+  _NormalButtonColor: {r: 0.2392157, g: 0.9607844, b: 0, a: 1}
+  _SelectedButtonColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!224 &4622859565440118675 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5367017530824988689, guid: 51301304f95865c47a43c7c25880c04c, type: 3}

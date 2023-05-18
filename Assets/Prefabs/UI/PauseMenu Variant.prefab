@@ -623,7 +623,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3405138740682335156, guid: 51301304f95865c47a43c7c25880c04c, type: 3}
       propertyPath: m_Name
-      value: PauseMenu
+      value: PauseMenu Variant
       objectReference: {fileID: 0}
     - target: {fileID: 3405138740682335156, guid: 51301304f95865c47a43c7c25880c04c, type: 3}
       propertyPath: m_IsActive
@@ -732,6 +732,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35f45bfc6be9df84daad9e63c142db7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _OnReturnToMainMenuFSMName: RETURN_MAIN_MENU
+  _FSMVariable: SCENE_TO_LOAD
+  _OnPauseMenuFSMName: PAUSE_SWITCH
   _IdProvider: {fileID: 11400000, guid: 6ebc028295ad14d4a81aaf49cdf1bc91, type: 2}
   _OptionsViewPrefab: {fileID: 7423699908457368893, guid: eb9471f362b4dac439bc9fddd716e7bf, type: 3}
   PauseButtons:
@@ -762,7 +765,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2212911420433807497, guid: 073dde322230cfd4d8b7da3fff095da9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2212911420433807497, guid: 073dde322230cfd4d8b7da3fff095da9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -774,11 +777,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2212911420433807497, guid: 073dde322230cfd4d8b7da3fff095da9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: QuitGame
+      value: ChangeScene
       objectReference: {fileID: 0}
     - target: {fileID: 2212911420433807497, guid: 073dde322230cfd4d8b7da3fff095da9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: PauseViewController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2212911420433807497, guid: 073dde322230cfd4d8b7da3fff095da9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: MainMenu
       objectReference: {fileID: 0}
     - target: {fileID: 2212911420433807497, guid: 073dde322230cfd4d8b7da3fff095da9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName

@@ -227,7 +227,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a5bdfc1c0afa79843b1d106096bd9126, type: 3}
       propertyPath: m_Name
-      value: Character (1) Variant
+      value: Character (1)
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a5bdfc1c0afa79843b1d106096bd9126, type: 3}
       propertyPath: m_IsActive
@@ -308,9 +308,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2c3f5b35bb6d02478f3fcf884df1198, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _OnPauseMenuFSMName: PAUSE_SWITCH
   _Rb: {fileID: 1469711354}
   _Animator: {fileID: 4243542984366952992}
-  _JumpPower: 8
+  _JumpPower: 5
   _StepPower: 2
   _StepPowerRunning: 3.5
   _MaxSpeed: 8

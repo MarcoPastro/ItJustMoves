@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MainMenuViewController : MonoBehaviour
 {
+    [SerializeField]
+    private string _OnHardLoadingToGameplayFSMName = "ON_HARD_LOADING";
+    [SerializeField]
+    private string _FSMVariable = "SCENE_TO_LOAD";
+
     [SerializeField]
     private ScriptableId _IdProvider;
     [Header("Option View Prefab")]
@@ -81,7 +87,8 @@ public class MainMenuViewController : MonoBehaviour
     }
     public void ChangeScene(string nameScene)
     {
-        TravelSystem.Instance.SceneLoad(nameScene);
+        FlowSystem.Instance.SetFSMVariable(_FSMVariable, nameScene);
+        FlowSystem.Instance.TriggerFSMEvent(_OnHardLoadingToGameplayFSMName);   
     }
     public void OpenOption()
     {

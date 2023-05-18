@@ -5,8 +5,13 @@ using UnityEngine.UI;
 
 public class PauseViewController : MonoBehaviour
 {
-    public delegate void OnActivePauseDelegate(bool value);
-    public OnActivePauseDelegate OnPauseActive;
+    [SerializeField]
+    private string _OnReturnToMainMenuFSMName = "RETURN_MAIN_MENU";
+    [SerializeField]
+    private string _FSMVariable = "SCENE_TO_LOAD";
+
+    [SerializeField]
+    private string _OnPauseMenuFSMName;
 
     [SerializeField]
     private ScriptableId _IdProvider;
@@ -32,7 +37,7 @@ public class PauseViewController : MonoBehaviour
     }
     private void OnEnable()
     {
-        OnPauseActive?.Invoke(true);
+        PlayerController.Instance.EnableInputProvider(_IdProvider.Id);
         _InputProvider.OnMoveMenu += MoveMenu;
         _InputProvider.OnEnterMenu += EnterMenu;
         _InputProvider.OnExitMenu += ExitMenu;
@@ -49,7 +54,7 @@ public class PauseViewController : MonoBehaviour
     }
     private void OnDisable()
     {
-        OnPauseActive?.Invoke(false);
+
         _InputProvider.OnMoveMenu -= MoveMenu;
         _InputProvider.OnEnterMenu -= EnterMenu;
         _InputProvider.OnExitMenu -= ExitMenu;
@@ -82,23 +87,27 @@ public class PauseViewController : MonoBehaviour
     {
         if (!_optionsViewController)
         {
-            QuitGame();
+            Resume();
         }
+    }
+    public void OnPause(bool value)
+    {
+        if (!value) return;
+        Resume();
     }
     public void Resume()
     {
-        gameObject.SetActive(false);
-        Time.timeScale = 1f;
+        PauseButtons[_selectedMainIndex].image.color = _NormalButtonColor;
+        FlowSystem.Instance.TriggerFSMEvent(_OnPauseMenuFSMName);
     }
     public void OpenOption()
     {
         if (_optionsViewController) return;
         _optionsViewController = Instantiate(_OptionsViewPrefab);
     }
-    public void QuitGame()
+    public void ChangeScene(string nameScene)
     {
-        Time.timeScale = 1f;
-        AudioController.Instance.StopMusic();
-        TravelSystem.Instance.SceneLoad("MainMenu");
+        FlowSystem.Instance.SetFSMVariable(_FSMVariable, nameScene);
+        FlowSystem.Instance.TriggerFSMEvent(_OnReturnToMainMenuFSMName);
     }
 }

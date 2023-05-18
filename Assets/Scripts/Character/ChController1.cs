@@ -6,12 +6,13 @@ using UnityEngine;
 public class ChController1 : MonoBehaviour
 {
     [SerializeField]
+    private string _OnPauseMenuFSMName;
+
+    [SerializeField]
     private Rigidbody _Rb;
     [SerializeField]
     private Animator _Animator;
 
-    [SerializeField] 
-    private PauseViewController _PauseMenu;
     [SerializeField]
     private float _JumpPower = 5f;
     [SerializeField]
@@ -31,7 +32,7 @@ public class ChController1 : MonoBehaviour
     private Vector3 _direction;
     private Vector3 _normalizedDirection;
     private Vector3 _normalizedVelocity;
-    private GameplayInputProvider _InputProvider;
+    private GameplayInputProvider _inputProvider;
     private bool _walking;
     private bool _running;
     private bool _falling;
@@ -51,17 +52,15 @@ public class ChController1 : MonoBehaviour
     {
         _baseVector = new Vector3(0, 0, 0);
         _direction = _baseVector;
-        _InputProvider = PlayerController.Instance.GetInput<GameplayInputProvider>(_IdProvider.Id);
+        _inputProvider = PlayerController.Instance.GetInput<GameplayInputProvider>(_IdProvider.Id);
     }
     private void OnEnable()
     {
-        _InputProvider.OnMove += MoveCharacter;
-        _InputProvider.OnJump += JumpCharacter;
-        _InputProvider.OnRun += RunCharacter;
-        _InputProvider.OnPause += PauseCharacter;
+        _inputProvider.OnMove += MoveCharacter;
+        _inputProvider.OnJump += JumpCharacter;
+        _inputProvider.OnRun += RunCharacter;
+        _inputProvider.OnPause += PauseCharacter;
         _FeetTrigger.OnFalling += FallingCharacter;
-
-        _PauseMenu.OnPauseActive += PauseActiveCharacter;
 
         _FeetTrigger.OnFalling += FallingCharacter;
         foreach (FootTrigger f in _Feets)
@@ -76,13 +75,11 @@ public class ChController1 : MonoBehaviour
     }
     private void OnDisable()
     {
-        _InputProvider.OnMove -= MoveCharacter;
-        _InputProvider.OnJump -= JumpCharacter;
-        _InputProvider.OnRun -= RunCharacter;
+        _inputProvider.OnMove -= MoveCharacter;
+        _inputProvider.OnJump -= JumpCharacter;
+        _inputProvider.OnRun -= RunCharacter;
         _FeetTrigger.OnFalling -= FallingCharacter;
-        _InputProvider.OnPause -= PauseCharacter;
-
-        _PauseMenu.OnPauseActive -= PauseActiveCharacter;
+        _inputProvider.OnPause -= PauseCharacter;//TODO mettere un level controller che dice la pausa
 
         foreach (FootTrigger f in _Feets)
         {
@@ -94,7 +91,7 @@ public class ChController1 : MonoBehaviour
     {
         if (!_falling) 
         {
-            _Animator.SetTrigger("Jumping");
+            _Animator.SetTrigger("Jumping");//TODO esporre in editor 
             AudioController.Instance.PlaySound(_JumpClip);
             _Rb.AddForce(Vector3.up * _JumpPower, ForceMode.VelocityChange);
             StartCoroutine(JumpDoneCharacter());
@@ -102,7 +99,7 @@ public class ChController1 : MonoBehaviour
     }
     IEnumerator JumpDoneCharacter()
     {
-        yield return new WaitUntil(() => _Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && !_Animator.IsInTransition(0));
+        yield return new WaitUntil(() => _Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && !_Animator.IsInTransition(0));//TODO cambiare, controllare con raycast per vedere se si stacca da terra 
         if (_hipOnce)
         {
             _Rb.AddForce(Vector3.up * _JumpPower, ForceMode.VelocityChange);
@@ -112,14 +109,14 @@ public class ChController1 : MonoBehaviour
     private void RunCharacter(bool isRunning)
     {
         _running=isRunning;
-        _Animator.SetBool("Running", _running);
+        _Animator.SetBool("Running", _running);//TODO esporre in editor 
     }
 
     private void MoveCharacter(Vector2 value)
     {
         _direction = new Vector3(value.x, 0f, value.y);
         _walking = true;
-        _Animator.SetBool("Walking", _walking);
+        _Animator.SetBool("Walking", _walking);//TODO esporre in editor 
 
     }
     private void Update()
@@ -138,8 +135,8 @@ public class ChController1 : MonoBehaviour
         {
             _walking =false;
             _running=false;
-            _Animator.SetBool("Running", _running);
-            _Animator.SetBool("Walking", _walking);
+            _Animator.SetBool("Running", _running);//TODO esporre in editor 
+            _Animator.SetBool("Walking", _walking);//TODO esporre in editor 
         }
         _velocityXZ=new Vector3(_Rb.velocity.x,0f, _Rb.velocity.z);
         if (_velocityXZ.magnitude > _MaxSpeed) 
@@ -172,43 +169,10 @@ public class ChController1 : MonoBehaviour
     private void FallingCharacter(bool isFalling)
     {
         _falling =isFalling;
-        _Animator.SetBool("Falling", _falling);
+        _Animator.SetBool("Falling", _falling);//TODO esporre in editor 
     }
     private void PauseCharacter()
     {
-        _PauseMenu.gameObject.SetActive(true);
-        Time.timeScale = 0f;
-    }
-    private void PauseActiveCharacter(bool active)
-    {
-        ReciveInputMove(!active);
-    }
-    private void ReciveInputMove(bool active)
-    {
-        if (!active)
-        {
-            _InputProvider.OnMove -= MoveCharacter;
-            _InputProvider.OnJump -= JumpCharacter;
-            _InputProvider.OnRun -= RunCharacter;
-            _InputProvider.OnPause -= PauseCharacter;
-            _FeetTrigger.OnFalling -= FallingCharacter;
-            foreach (FootTrigger f in _Feets)
-            {
-                f.OnGrounded -= StepCharacter;
-            }
-        }
-        else
-        {
-            _InputProvider.OnMove += MoveCharacter;
-            _InputProvider.OnJump += JumpCharacter;
-            _InputProvider.OnRun += RunCharacter;
-            _InputProvider.OnPause += PauseCharacter;
-            _FeetTrigger.OnFalling += FallingCharacter;
-            foreach (FootTrigger f in _Feets)
-            {
-                f.OnGrounded += StepCharacter;
-            }
-        }
-        
+        FlowSystem.Instance.TriggerFSMEvent(_OnPauseMenuFSMName);
     }
 }
